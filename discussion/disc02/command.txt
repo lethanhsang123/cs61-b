@@ -1,0 +1,6 @@
+- make 'lib' and 'out' directory
+- Install junit-platform-console-standalone-6.1.2.jar to lib
+
+javac -cp lib/junit-platform-console-standalone-6.1.2.jar -d ./out Discussion02.java Discussion02Test.java
+
+java -jar lib/junit-platform-console-standalone-6.1.2.jar execute --class-path out --select-class Discussion02Test
