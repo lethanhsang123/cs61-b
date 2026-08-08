@@ -1,0 +1,6 @@
+- make 'libs' and 'out' directory
+- Install junit-platform-console-standalone-6.1.2.jar to libs
+
+javac -cp ../../../libs/junit-platform-console-standalone-6.1.3.jar -d ./out Direction.java Particle.java ParticleFlavor.java TestParticle.java ParticleSimulator.java TestParticleSimulator.java
+
+java -jar ../../../libs/junit-platform-console-standalone-6.1.3.jar execute --class-path out --select-class TestParticleSimulator TestParticle
