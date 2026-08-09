@@ -1,3 +1,5 @@
+package edu.berkeley.cs61b.proj0.model;
+
 import java.util.Map;
 import java.awt.Color;
 
@@ -50,6 +52,13 @@ public class Particle {
         other.setLifespan(this.lifespan);
         this.flavor = ParticleFlavor.EMPTY;
         this.lifespan = -1;
+    }
+
+    public void fall(Map<Direction, Particle> neighbors) {
+        Particle down = neighbors.get(Direction.DOWN);
+        if (down != null && ParticleFlavor.EMPTY.equals(down.getFlavor())) {
+            this.moveInto(neighbors.get(Direction.DOWN));
+        }
     }
 
 
