@@ -88,7 +88,8 @@ public class ParticleSimulator {
     public void tick() {
         for (int i = 0; i < particles.length; i++) {
             for (int j = 0; j < particles[i].length; j++) {
-                particles[i][j].fall(getNeighbors(i, j));
+                particles[i][j].action(getNeighbors(i, j));
+                particles[i][j].decrementLifespan();
             }
         }
     }

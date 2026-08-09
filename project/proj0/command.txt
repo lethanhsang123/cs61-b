@@ -1,4 +1,7 @@
 - Change working directory to prj0
+- create libs folder:
+    + algs4.jar
+    + junit-platform-console-standalone-6.1.2.jar
 
 Step 1: Compile Time
     - Compile production code: javac -cp "libs/algs4.jar" -d out/classes $(find src/main/java -name "*.java")

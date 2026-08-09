@@ -33,9 +33,10 @@ public class Main {
                 }
             }
 
+            particleSimulator.tick();
             particleSimulator.drawParticles();
             StdDraw.show();
-            StdDraw.pause(0);
+            StdDraw.pause(5);
         }
 
     }

@@ -11,7 +11,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -167,4 +171,231 @@ public class TestParticleSimulator {
                 sim.toString().trim());
     }
 
+    @Test
+    public void testTickWithFlow() {
+        // Arrange:
+        // Col 0: Stacked Sand (s) on Barrier -> Should be Stable
+        // Col 2: Water (w) on Barrier -> Should Flow
+        // Col 4: Sand (s) in Air -> Should Fall
+        String startState = """
+                s...s
+                s.w..
+                bbbbb
+                """;
+
+        // Possibility 1: Water stays put (or moves Right then Left)
+        // Sand falls.
+        String expectStay = """
+                s....
+                s.w.s
+                bbbbb
+                """;
+
+        // Possibility 2: Water flows Left.
+        // Sand falls.
+        String expectLeft = """
+                s....
+                sw..s
+                bbbbb
+                """;
+
+        // Possibility 3: Water flows Right ONCE (Right then Stay).
+        // Sand falls.
+        String expectRightSingle = """
+                s....
+                s..ws
+                bbbbb
+                """;
+
+        // Possibility 4: Water flows Right TWICE (Right then Right).
+        // Water ends up under the Sand (at 4,1), blocking the Sand at (4,2).
+        String expectRightDouble = """
+                s...s
+                s...w
+                bbbbb
+                """;
+
+        int countStay = 0;
+        int countLeft = 0;
+        int countRightSingle = 0;
+        int countRightDouble = 0;
+
+        // Act: Run 1000 simulations
+        for (int i = 0; i < 1000; i++) {
+            ParticleSimulator sim = fromBoardString(startState);
+            sim.tick();
+
+            String result = sim.toString().trim();
+
+            if (result.equals(expectStay.trim())) {
+                countStay += 1;
+            } else if (result.equals(expectLeft.trim())) {
+                countLeft += 1;
+            } else if (result.equals(expectRightSingle.trim())) {
+                countRightSingle += 1;
+            } else if (result.equals(expectRightDouble.trim())) {
+                countRightDouble += 1;
+            } else {
+                throw new AssertionError("Unexpected board state:\n" + result);
+            }
+        }
+
+        // Assert:
+
+        // 1. Left (~33%): > 240 is safe.
+        assertTrue(
+                countLeft > 240,
+                "Expected more than 240 left-flow results, but got " + countLeft);
+
+        // 2. Stay (~44%):
+        // 1/3 (Stay) + 1/9 (Right-then-Left) = 4/9.
+        assertTrue(
+                countStay > 240,
+                "Expected more than 240 stay results, but got " + countStay);
+
+        // 3. Right Single (~11%):
+        // 1/3 (Right) * 1/3 (Stay) = 1/9.
+        assertTrue(
+                countRightSingle > 50,
+                "Expected more than 50 right-single results, but got "
+                        + countRightSingle);
+
+        // 4. Right Double (~11%):
+        // 1/3 (Right) * 1/3 (Right) = 1/9.
+        assertTrue(
+                countRightDouble > 50,
+                "Expected more than 50 right-double results, but got "
+                        + countRightDouble);
+    }
+
+    @Test
+    public void testFallingWaterDoesNotFlow() {
+        // Arrange:
+        // Water (w) suspended in the center.
+        // It has empty space below it (so it MUST fall).
+        // It has empty space to the sides (so it COULD flow, if logic was wrong).
+        String startState = """
+                ...
+                .w.
+                ...
+                bbb
+                """;
+
+        // Expected Behavior:
+        // The water drops exactly one spot (to the center bottom).
+        // It should NOT move Left or Right after falling.
+        String expectedState = """
+                ...
+                ...
+                .w.
+                bbb
+                """;
+
+        for (int i = 0; i < 100; i++) {
+            ParticleSimulator sim = fromBoardString(startState);
+            sim.tick();
+
+            String result = sim.toString().trim();
+
+            assertEquals(
+                    expectedState.trim(),
+                    result);
+        }
+    }
+
+    @Test
+    public void testGrow() {
+        String startState = """
+                ...
+                .p.
+                bbb
+                """.trim();
+
+        // The list of REQUIRED growth outcomes
+        List<String> expectedGrowthStates = new ArrayList<>();
+
+        expectedGrowthStates.add("""
+                ...
+                .p.
+                bbb
+                """.trim()); // no growth
+
+        expectedGrowthStates.add("""
+                ...
+                pp.
+                bbb
+                """.trim()); // Left
+
+        expectedGrowthStates.add("""
+                .p.
+                .p.
+                bbb
+                """.trim()); // Up
+
+        expectedGrowthStates.add("""
+                pp.
+                .p.
+                bbb
+                """.trim()); // Up + Left
+
+        expectedGrowthStates.add("""
+                ...
+                .pp
+                bbb
+                """.trim()); // Right
+
+        expectedGrowthStates.add("""
+                ..p
+                .pp
+                bbb
+                """.trim()); // Right + Up
+
+        expectedGrowthStates.add("""
+                .p.
+                .pp
+                bbb
+                """.trim()); // Up, Right (fall)
+
+        expectedGrowthStates.add("""
+                .pp
+                .pp
+                bbb
+                """.trim()); // Right, Up, Left
+
+        // --- ACT ---
+        Set<String> observedStates = new HashSet<>();
+
+        for (int i = 0; i < 10000; i++) {
+            ParticleSimulator sim = fromBoardString(startState);
+            sim.tick();
+
+            observedStates.add(sim.toString().trim());
+        }
+
+        // --- ASSERT 1: CHECK FOR MISSING STATES ---
+        for (String expected : expectedGrowthStates) {
+            assertTrue(
+                    observedStates.contains(expected),
+                    """
+                            Test Failed: A required growth state was never observed.
+                            Missing State:
+                            %s
+                            """.formatted(expected));
+        }
+
+        // --- ASSERT 2: CHECK FOR UNEXPECTED (INVALID) STATES ---
+
+        // Create a "White List" of all valid outcomes (Growth + No Change)
+        Set<String> validStates = new HashSet<>(expectedGrowthStates);
+
+        for (String observed : observedStates) {
+            assertTrue(
+                    validStates.contains(observed),
+                    """
+                            Test Failed: An invalid/impossible state was generated.
+                            Unexpected State:
+                            %s
+                            """.formatted(observed));
+        }
+    }
 }
