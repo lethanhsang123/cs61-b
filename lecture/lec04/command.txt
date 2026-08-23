@@ -3,4 +3,4 @@
 
 javac -cp lib/junit-platform-console-standalone-6.1.2.jar -d ./out Sort.java SortTesting.java
 
-java   -jar lib/junit-platform-console-standalone-6.1.2.jar   execute   --class-path out   --select-class SortTesting
+java -jar lib/junit-platform-console-standalone-6.1.2.jar   execute   --class-path out   --select-class SortTesting

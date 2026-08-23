@@ -1,0 +1,6 @@
+javac -d out/classes $(find ./ -name "*.java")
+
+java -cp "out/classes" SLList
+
+JAR: jar --create --file dist/lec06.jar --main-class SLList -C out/classes .
+Run with Jar: java -cp "dist/lec06.jar" SLList
