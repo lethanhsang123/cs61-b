@@ -108,6 +108,28 @@ public class Discussion03 {
          */
         public static void removeDuplicates(IntList p) { 
             if (p == null || p.rest == null) { return; }
+            IntList current = p.rest;
+            IntList prev = p;
+            while (current != null) {
+                if (current.first == prev.first) {
+                    prev.rest = current.rest;
+                } else {
+                    prev = current;
+                }
+                current = current.rest;
+            }
+        }
+
+        public void insert(int x, int position) {
+            if(position < 1) return;
+
+            // Travel to x - 1 item
+            if (position == 1) {
+                IntList newItem = new IntList(x, this.rest);
+                this.rest = newItem;
+            } else {
+                this.insert(x, position - 1);
+            }
         }
 
     }
