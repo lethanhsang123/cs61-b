@@ -132,6 +132,63 @@ public class Discussion03 {
             }
         }
 
-    }
+        public static IntList reverse(IntList list) {
+            IntList prev = null;
+            IntList curr = list;
+            while (curr != null) {
+                IntList next = curr.rest;
+                curr.rest = prev;
+                prev = curr;
+                curr = next;
+            }
+            return prev;
+        }
 
+        public static IntList[] interweave(IntList lst, int k) { 
+            IntList[] result = new IntList[k];
+
+            int index = k - 1;
+            IntList L = reverse(lst);
+            
+            while (L != null) {
+                // Save the CURRENT HEAD of output list
+                IntList prevAtIndex = result[index];
+
+                // Save the next input node
+                IntList next = L.getRest();
+
+                // PREPEND L to the ouput list
+                L.rest = prevAtIndex;
+                // Save NEW HEAD of output list
+                result[index] = L;
+
+                // Move to the next unprocessed node
+                L = next;
+
+                // Move to the previous array index
+                index--;
+
+                // Wrap around
+                if (index < 0) {
+                    index = k - 1;
+                }
+            }
+
+            return result;
+        }
+
+        public void skippify() {
+            IntList current = this;
+            int skipNumber = 1;
+            while (current != null) {
+                IntList next = current.getRest();
+                for (int i = 0; i < skipNumber && next != null; i++) {
+                    next = next.getRest();
+                }
+                skipNumber++;
+                current.rest = next;
+                current = next;
+            }
+        }
+    }
 }
