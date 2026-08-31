@@ -190,5 +190,65 @@ public class Discussion03 {
                 current = next;
             }
         }
+    
+    }
+
+    static class SLList {
+        private static class Node {
+            private int item;
+            private Node next;
+
+            public Node() {}
+
+            public Node(int item, Node next) {
+                this.item = item;
+                this.next = next;
+            }
+
+            public int getItem() {
+                return this.item;
+            }
+
+            public Node getNext() {
+                return this.next;
+            }
+        }
+        
+        private Node sentinel;
+
+        public SLList() {
+            this.sentinel = new Node();
+            this.sentinel.next = this.sentinel;
+        }
+
+        public int[][] gridify(int rows, int cols) {
+            Node current = sentinel.getNext();
+            int[][] result = new int[rows][cols];
+            for (int i = 0; i < result.length && current != sentinel; i++) {
+                for (int j = 0; j < result[i].length && current != sentinel; j++) {
+                        result[i][j] = current.getItem();
+                        current = current.getNext();
+                }
+            }
+            return result;
+        }
+
+        private void gridifyHelper(int[][] grid, Node curr, int numFilled) {
+        
+        }
+
+        // Test helper
+        public void addLast(int item) {
+            Node newNode = new Node(item, sentinel);
+
+            Node current = sentinel;
+
+            while (current.next != sentinel) {
+                current = current.next;
+            }
+
+            current.next = newNode;
+        }
+    
     }
 }

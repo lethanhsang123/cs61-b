@@ -1,5 +1,7 @@
 import org.junit.jupiter.api.Test;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Discussion03Test {
@@ -62,5 +64,102 @@ public class Discussion03Test {
         assertEquals(9, resource.getFirst());
         assertEquals(7, resource.getRest().getFirst());
         assertEquals(4, resource.getRest().getRest().getFirst());
+    }
+
+    @Test
+    void gridify_shouldFillGridRowMajor() {
+        Discussion03.SLList list = new Discussion03.SLList();
+
+        list.addLast(5);
+        list.addLast(3);
+        list.addLast(7);
+        list.addLast(2);
+        list.addLast(8);
+
+        int[][] expected = {
+            {5, 3, 7},
+            {2, 8, 0}
+        };
+
+        assertArrayEquals(expected, list.gridify(2, 3));
+    }
+
+    @Test
+    void gridify_shouldFillRemainingElementsWithZero() {
+        Discussion03.SLList list = new Discussion03.SLList();
+
+        list.addLast(1);
+        list.addLast(2);
+
+        int[][] expected = {
+            {1, 2, 0},
+            {0, 0, 0}
+        };
+
+        assertArrayEquals(expected, list.gridify(2, 3));
+    }
+
+    @Test
+    void gridify_shouldIgnoreExtraElements() {
+        Discussion03.SLList list = new Discussion03.SLList();
+
+        list.addLast(1);
+        list.addLast(2);
+        list.addLast(3);
+        list.addLast(4);
+        list.addLast(5);
+        list.addLast(6);
+        list.addLast(7);
+
+        int[][] expected = {
+            {1, 2, 3},
+            {4, 5, 6}
+        };
+
+        assertArrayEquals(expected, list.gridify(2, 3));
+    }
+
+    @Test
+    void gridify_shouldWorkWithOneRow() {
+        Discussion03.SLList list = new Discussion03.SLList();
+
+        list.addLast(10);
+        list.addLast(20);
+        list.addLast(30);
+
+        int[][] expected = {
+            {10, 20, 30}
+        };
+
+        assertArrayEquals(expected, list.gridify(1, 3));
+    }
+
+    @Test
+    void gridify_shouldWorkWithOneColumn() {
+        Discussion03.SLList list = new Discussion03.SLList();
+
+        list.addLast(10);
+        list.addLast(20);
+        list.addLast(30);
+
+        int[][] expected = {
+            {10},
+            {20},
+            {30}
+        };
+
+        assertArrayEquals(expected, list.gridify(3, 1));
+    }
+
+    @Test
+    void gridify_shouldReturnAllZerosForEmptyList() {
+        Discussion03.SLList list = new Discussion03.SLList();
+
+        int[][] expected = {
+            {0, 0, 0},
+            {0, 0, 0}
+        };
+
+        assertArrayEquals(expected, list.gridify(2, 3));
     }
 }
