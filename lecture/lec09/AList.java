@@ -15,7 +15,24 @@ public class AList<T> implements List61B<T> {
 
     @Override
     public void addFirst(T value) {
-        // Todo
+        // check length, if exceed -> resize
+        if (this.size == this.items.length) {
+            resize(size + 1);
+        }
+        // move forward
+        this.moveForward(0);
+        this.size++;
+        // add first
+        this.items[0] = value;
+    }
+
+    private void moveForward(int position) {
+        for (int i = size - 1; i >= position; i--) {
+            // move i forward to i+1
+            this.items[i + 1] = this.items[i];
+            // remove i
+            this.items[i] = null;
+        }
     }
 
     @Override
@@ -29,18 +46,25 @@ public class AList<T> implements List61B<T> {
 
     @Override
     public T getFirst() {
-        // Todo
-        return null;
+        if (this.size <= 0) {
+            return null;
+        }
+        return this.items[0];
     }
 
     @Override
     public T getLast() {
-        // Todo
-        return null;
+        if (this.size <= 0) {
+            return null;
+        }
+        return this.get(size - 1);
     }
 
     @Override
     public T removeLast() {
+        if (this.size <= 0) {
+            return null;
+        }
         T lastItem = this.items[size - 1];
         this.items[size - 1] = null;
         size --;
@@ -54,12 +78,19 @@ public class AList<T> implements List61B<T> {
 
     @Override
     public void insert(T item, int position) {
-        // Todo
+        // check length, if exceed -> resize
+        if (this.size == this.items.length) {
+            resize(size + 1);
+        }
+        // move forward
+        this.moveForward(position);
+        this.size++;
+        this.items[position] = item;
     }
 
     private void resize(int capacity) {
         T[] newItems = (T[]) new Object[capacity];
-        for (int i = 0; i < this.items.length; i++) {
+        for (int i = 0; i < this.size; i++) {
             newItems[i] = this.items[i];
         }
         this.items = newItems;
