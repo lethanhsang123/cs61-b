@@ -112,6 +112,14 @@ public class ArraySet<T> implements Iterable<T> {
         return false;
     }
 
+    public static <E> ArraySet<E> of(E... elements) {
+        ArraySet<E> arraySet = new ArraySet<E>();
+        for(E x: elements) {
+            arraySet.add(x);
+        }
+        return arraySet;
+    }
+
     public static void main(String[] args) {
 
         Set<Integer> javaSet = new HashSet<Integer>();
