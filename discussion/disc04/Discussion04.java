@@ -61,6 +61,88 @@ class LinkedListDeque<T> implements Deque<T> {
         this.size = 0;
     }
 
+
+    
+    public void addFirst(T e) {
+        Node node = new Node(e, this.sentinel.getNext(), this.sentinel);
+        this.sentinel.setNext(node);
+        this.size++;
+    }
+
+    public void addLast(T e) {
+        // travel to last node;
+        Node last = this.sentinel;
+        while(last.next != null) {
+            last = last.next;
+        }
+        Node newNode = new Node(e, null, last);
+        last.setNext(newNode); 
+        this.size++;
+    }
+
+    public boolean offerFirst(T e) { 
+        Node node = new Node(e, this.sentinel.getNext(), this.sentinel);
+        this.sentinel.setNext(node); 
+        this.size++;
+        return true;
+    }
+
+    public boolean offerLast(T e) {    
+        // travel to last node;
+        Node last = this.sentinel;
+        while(last.next != null) {
+            last = last.next;
+        }
+        Node newNode = new Node(e, null, last);
+        last.setNext(newNode); 
+        this.size++;
+        return true;
+    }
+
+    public T removeFirst() {
+        if (this.sentinel.getNext() == null) {
+            return null;
+        }
+        Node first = this.sentinel.getNext();
+        this.sentinel.setNext(first.getNext());
+        if (first.getNext() != null) {
+            first.getNext().setPrev(this.sentinel);
+        } 
+        this.size--;
+        return first.getValue();
+    }
+
+    public T removeLast() {
+        if (this.sentinel.getNext() == null) {
+            return null;
+        }
+        Node last = this.sentinel.getNext();
+        while (last.getNext() != null) {
+            last = last.getNext();
+        }
+        last.getPrev().setNext(null);
+        last.setPrev(null); 
+        this.size--;
+        return last.getValue();
+    }
+
+    public T pollFirst() {
+        return null;
+    }
+
+    public T pollLast() {
+        return null;
+    }
+
+    public void push(T t) {
+        
+    }
+
+    public T pop() {
+        return null;
+    }
+
+
 }
 
 
