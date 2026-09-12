@@ -14,6 +14,30 @@ interface Deque<E> {
 
     void push(E var1);
     E pop();
+
+    /**
+     * TODO: Remove all items from the queue
+     */
+    default void clear() {
+
+    }
+
+    /**
+     * TODO: Removes all items equal to item from the queue
+     * the remaining items should be in the same order as they were before
+     * use .equals to compare items rather than ==
+     */
+    default void remove(E item) {
+
+    }
+
+    /**
+     * Appends all items from the other queue into this queue
+     * This method should be non-destructive on the otherQueue!
+     */
+    default void appendAll(Deque<E> otherQueue) {
+
+    }
 }
 
 
