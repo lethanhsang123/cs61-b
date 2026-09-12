@@ -127,19 +127,51 @@ class LinkedListDeque<T> implements Deque<T> {
     }
 
     public T pollFirst() {
-        return null;
+        if (this.sentinel.getNext() == null) {
+            return null;
+        }
+        Node last = this.sentinel.getNext();
+        while (last.getNext() != null) {
+            last = last.getNext();
+        }
+        last.getPrev().setNext(null);
+        last.setPrev(null); 
+        this.size--;
+        return last.getValue();
     }
 
     public T pollLast() {
-        return null;
+        if (this.sentinel.getNext() == null) {
+            return null;
+        }
+        Node last = this.sentinel.getNext();
+        while (last.getNext() != null) {
+            last = last.getNext();
+        }
+        last.getPrev().setNext(null);
+        last.setPrev(null); 
+        this.size--;
+        return last.getValue();
     }
 
     public void push(T t) {
-        
+        Node node = new Node(t, this.sentinel.getNext(), this.sentinel);
+        this.sentinel.setNext(node);
+        this.size++;
     }
 
     public T pop() {
-        return null;
+        if (this.sentinel.getNext() == null) {
+            return null;
+        }
+        Node last = this.sentinel.getNext();
+        while (last.getNext() != null) {
+            last = last.getNext();
+        }
+        last.getPrev().setNext(null);
+        last.setPrev(null); 
+        this.size--;
+        return last.getValue();
     }
 
 
