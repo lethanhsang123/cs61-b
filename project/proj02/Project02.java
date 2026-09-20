@@ -169,60 +169,111 @@ class CircleArrayDeque61B<T> implements Deque<T> {
             newItems[newPhysicalIndex] = this.items[oldPhysicalIndex];
         }
         this.items = newItems;
+        this.front = 0;
     }
 
      
     @Override   
     public void addFirst(T e) {
-        // TODO: implements
+        if (this.size >= this.items.length) {
+            grow();
+        }
+        int newFront = (this.front - 1 + this.items.length) % this.items.length;
+        this.items[newFront] = e;
+        this.front = newFront;
+        this.size++;
     }
 
     @Override
     public void enqueue(T e) {
-        // TODO: implements
+        if (this.size >= this.items.length) {
+            grow();
+        }
+        int newFront = (this.front - 1 + this.items.length) % this.items.length;
+        this.items[newFront] = e;
+        this.front = newFront;
+        this.size++;
     }
 
     @Override
     public boolean offerFirst(T e) {
         // TODO: implements
+
+        if (this.size >= this.items.length) {
+            grow();
+        }
+        int newFront = (this.front - 1 + this.items.length) % this.items.length;
+        this.items[newFront] = e;
+        this.front = newFront;
+        this.size++;       
         return false;
     }
 
 
     @Override
     public boolean isEmpty() {
-        // TODO: implements
-        return false;
+        return this.size <= 0;
     }
 
     @Override
     public T dequeue() {
-        // TOOD: implements
-        return null;
+        if (isEmpty()) {
+            // TODO: Should throw Illegal exception
+        }
+        int physicalLastPosition = (this.front + this.size - 1) % this.items.length;
+        T lastElement = this.items[physicalLastPosition];
+        this.items[physicalLastPosition] = null;
+        this.size --;
+        return lastElement;
     }
 
     @Override
     public T removeLast() {
-        // TODO: implements
-        return null;
+        if (isEmpty()) {
+            // TODO: Should throw Illegal exception
+        }
+        int physicalLastPosition = (this.front + this.size - 1) % this.items.length;
+        T lastElement = this.items[physicalLastPosition];
+        this.items[physicalLastPosition] = null;
+        this.size --;
+        return lastElement;
     }
 
 
     @Override
     public T pollLast() {
-        // TODO: implements
-        return null;
+        if (isEmpty()) {
+            // TODO: Should throw Illegal exception
+        }
+        int physicalLastPosition = (this.front + this.size - 1) % this.items.length;
+        T lastElement = this.items[physicalLastPosition];
+        this.items[physicalLastPosition] = null;
+        this.size --;
+        return lastElement;
     }
 
     @Override
     public void push(T t) {
-        // TODO: implements
+        if (this.size >= this.items.length) {
+            grow();
+        }
+        int newFront = (this.front - 1 + this.items.length) % this.items.length;
+        this.items[newFront] = t;
+        this.front = newFront;
+        this.size++;
     }
 
     @Override
     public T pop() {
-        // TODO: implements
-        return null;
+        if (isEmpty()) {
+            // TODO: Should throw exception
+        }
+        T firstElement = this.items[this.front];
+        int newFront = (this.front + 1) % this.items.length;
+        this.items[this.front] = null;
+        this.size --;
+        this.front = newFront;
+        return firstElement;
     }
 
    
@@ -230,7 +281,26 @@ class CircleArrayDeque61B<T> implements Deque<T> {
      * Rotates the Deque left by x places. Assume x is non-negative.
      */
     public void rotateLeft(int x) {
-        // TODO: implements
+        // base case
+        if (isEmpty() || x <= 0) {
+            return;
+        }
+        // get first 
+        T firstElement = this.items[this.front];
+
+        // remove first
+        this.items[this.front] = null;
+        
+        // add last 
+        int newPhysicalLastPosition = (this.front + this.size) % this.items.length;
+        this.items[newPhysicalLastPosition] = firstElement;
+        
+        // update front
+        this.front = (this.front + 1) % this.items.length;
+
+        if (x > 1) {
+            rotateLeft(x - 1);
+        }
     }
 
 
