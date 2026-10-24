@@ -2,7 +2,7 @@
 Consider the following runtimes:  
 $Log(n) + N$ &emsp;|&emsp; $Log(2^{N})$ &emsp;|&emsp; $N^{2} + 3NLog(N)$ &emsp;|&emsp; $2^{N} \times 2$ &emsp;|&emsp; $Log(9)$ &emsp;|&emsp; $2^{N+4}$ &emsp;|&emsp; $2 + \frac{1}{n}$ &emsp;|&emsp; $Log(N^{2})$ &emsp;|&emsp; $5 \times N^{2}$ &emsp;|&emsp; $6 \times Log(N)$  
 Theta bound, sumplify, and sort each of the aboce runtimes in the below categories.  
-&emsp;$\Theta(1)$&emsp;|&emsp;$\Theta(Log(N))$&emsp;|&emsp;$\Theta(N)$&emsp;|&emsp;$\Theta(N^{2})$&emsp;|&emsp;$\Theta(2^{N})$  
+$\Theta(1)$ $\Theta(Log(N))$ $\Theta(N)$ $\Theta(N^{2})$ $\Theta(2^{N})$  
 slowest-growing <---------------------------------------> fastest-growing
 ## Description
 ### Understand what $\Theta$ means
