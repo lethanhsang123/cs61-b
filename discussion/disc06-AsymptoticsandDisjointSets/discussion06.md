@@ -115,9 +115,11 @@ A major component of asymptotic analysis is the analysis for loops. Let N be som
 Consider the below loop.
 
 $$
+\begin{aligned}
     for (int i = 1; i < N; i++) { \\
         doWork(); \\
     }
+\end{aligned}
 $$
 
 ## What is the asymptotic runtime in terms of N?
@@ -136,11 +138,13 @@ $$
 Consider a nested for loop.
 
 $$
+\begin{aligned}
     for(int i = 0; i < N; i ++) { \\
         for(int j = 0; j < N; j ++) { \\
             doWork(); \\
         } \\
     }
+\end{aligned}
 $$
 
 ## What is the asymptotic runtime in terms of N?
@@ -158,11 +162,13 @@ Analyze the following loops and determine the asymptotic runtime of each using b
 ## SC1
 
 $$
+\begin{aligned}
     int x = 7; \\
     while(x < N + 14) { \\
         System.out.println("tidal wave"); \\
         x++; \\
     }
+\end{aligned}
 $$
 
 Runtime: $\Theta(N)$
