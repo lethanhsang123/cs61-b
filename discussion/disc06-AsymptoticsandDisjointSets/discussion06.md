@@ -122,7 +122,7 @@ $$
 
 ## What is the asymptotic runtime in terms of N?
 
--$ R(N) = N \in \Theta(N) $
+- $ R(N) = N \in \Theta(N) $
 
 ## If we were to change i < N to i < N * 5, would the asymptotic runtime change ? If so, what should the new theta bound be? If not, why not ?
 
@@ -154,4 +154,3 @@ $$
 # 3 xStep
 
 # 4 Disjoint Sets
-
